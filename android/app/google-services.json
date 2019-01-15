@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "202237958692",
+    "firebase_url": "https://news-app-e8b33.firebaseio.com",
+    "project_id": "news-app-e8b33",
+    "storage_bucket": "news-app-e8b33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202237958692:android:f0f873637436881d",
+        "android_client_info": {
+          "package_name": "com.iotdroid.newsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202237958692-8utmkmrnfuvjd44hma9ieaj7kel403hl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbCHgPN_b8ooeKPtkp7osf-vs90f_pIyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
