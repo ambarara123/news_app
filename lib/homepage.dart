@@ -29,11 +29,15 @@ class _HomeState extends State<HomePage> {
   JsonList jsonList;
   List<NewsArticles> articleList = List<NewsArticles>();
   List<NewsArticles> newsArticles = List<NewsArticles>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  new GlobalKey<RefreshIndicatorState>();
 
 
 
-  _getData() {
-    API.getData(API.GOOGLE_India).then((response) {
+  Future<Null> _getData() {
+
+   return API.getData(API.GOOGLE_India).then((response) {
+   //  _refreshIndicatorKey.currentState?.show();
       setState(() {
        // print(response.body);
         Xml2Json myTransformer = Xml2Json();
@@ -54,27 +58,34 @@ class _HomeState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
 
     _getData();
+
+
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        child: BuildListView(
-          articleList: articleList,
-        ), onRefresh: () {
-          _getData();
-      },
-      ),
+    return RefreshIndicator(
+      onRefresh: _getData,
+      key: _refreshIndicatorKey,
+      child: BuildListView(
+            articleList: articleList,
+          ),
     );
+
+
+
   }
 
   @override
   void dispose() {
 
     super.dispose();
+
 
   }
 }

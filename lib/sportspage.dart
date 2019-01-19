@@ -47,8 +47,6 @@ class _SportsState extends State<SportsPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: BuildListView(articleList: articleList)
-    );
+    return BuildListView(articleList: articleList);
   }
 }

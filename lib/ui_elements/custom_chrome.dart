@@ -13,14 +13,14 @@ class ChromeWebView {
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          //animation: new CustomTabsAnimation.slideIn()
+          animation: new CustomTabsAnimation.slideIn()
           // or user defined animation.
-          animation: new CustomTabsAnimation(
+         /* animation: new CustomTabsAnimation(
             startEnter: 'slide_up',
             startExit: 'android:anim/fade_out',
             endEnter: 'android:anim/fade_in',
             endExit: 'slide_down',
-          ),
+          ),*/
         ),
       );
     } catch (e) {

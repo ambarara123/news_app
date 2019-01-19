@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './homepage.dart';
 import './sportspage.dart';
 
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,15 +12,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        primaryColorDark: Color(0xcccccc),
+        primaryColorLight: Colors.white,
+
+        primarySwatch: Colors.pink,
+
+        fontFamily: 'Montserrat',
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
+
+
+
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -29,15 +36,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -45,15 +43,55 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  TabController tabController;
+  ScrollController scrollController;
+
+
+
+  Widget _buildPage({int index, Color color}) {
+    return Container(
+      alignment: AlignmentDirectional.center,
+      color: color,
+      child: Text(
+        '$index',
+        style: TextStyle(fontSize: 132.0, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildPageView() {
+    return PageView(
+      children: [
+        _buildPage(index: 1, color: Colors.green),
+        _buildPage(index: 2, color: Colors.blue),
+        _buildPage(index: 3, color: Colors.indigo),
+        _buildPage(index: 4, color: Colors.red),
+      ],
+    );
+  }
+
+
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
+    tabController = TabController(length: 2, vsync: this);
+    scrollController = ScrollController();
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    tabController.dispose();
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
 
       drawer: Drawer(
 
@@ -71,109 +109,57 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ),
       ),
 
-      body: DefaultTabController(
-          length: 2,
-          child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
+      body: NestedScrollView(
+        controller: scrollController,
+        headerSliverBuilder:
+            (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              centerTitle: false,
+              title: Text('Category'),
+              elevation: 0,
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              forceElevated: false,
 
-                  expandedHeight: 200.0,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                      centerTitle: false,
-                      title: Text("Collapsing Toolbar",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          )),
-                      background: Image.network(
-                        "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                SliverPersistentHeader(
-                  delegate: _SliverAppBarDelegate(
-                    TabBar(
-                      labelColor: Colors.black87,
-                      unselectedLabelColor: Colors.grey,
-                      tabs: [
-                        Tab(
-                          text: 'Home',
-                          icon: Icon(Icons.home),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.pages),
-                          text: 'sports',
-                        ),
-                      ],
-                    ),
-                  ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: Center(
-                child: TabBarView(
-
-                  children: <Widget>[
-                    HomePage(),
-                    SportsPage(),
-                  ],)
+              flexibleSpace: FlexibleSpaceBar(
+                  background: _buildPageView(),/*Image.network(
+                    "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                    fit: BoxFit.cover,
+                  ),*/
+              ),
             ),
-          )
+            SliverPersistentHeader(
+              delegate: _SliverAppBarDelegate(
+              TabBar(
 
-/*    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-
-        drawer: Drawer(
-
-          child: Column(
-            children: <Widget>[
-              AppBar(
-
-                automaticallyImplyLeading: false,
-              ),
-              ListTile(
-                title: Text('something'),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-        appBar: AppBar(
-          bottom: TabBar(
-            tabs: <Widget>[
+              controller: tabController,
+              labelColor: Colors.black87,
+              unselectedLabelColor: Colors.grey,
+              tabs: [
               Tab(
-                text: 'Home',
-                icon: Icon(Icons.home),
+              text: 'Home',
               ),
               Tab(
-                icon: Icon(Icons.pages),
-                text: 'sports',
+              text: 'sports',
               ),
-            ],
-          ),
+              ],
+              ),
 
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-
-        ),
-        body: NestedScrollView(
-          child: TabBarView(
-
-            children: <Widget>[
+              ),
+              pinned: true,
+            ),
+          ];
+        },
+        body: TabBarView(
+          
+          controller: tabController,
+          children: <Widget>[
             HomePage(),
             SportsPage(),
           ],),
-        ) // This trailing comma makes auto-formatting nicer for build methods.
       ),
-    );*/
-          ),
     );
   }
 }
@@ -192,6 +178,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
+
+      color: Colors.white,
       child: _tabBar,
     );
   }
